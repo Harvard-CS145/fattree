@@ -186,9 +186,9 @@ You are expected to submit the following documents:
 
 2. report/report.md: In this file you should describe how you generate the FatTree topologies, how to use your topology generating programs, how you generate the forwarding rules for different routing policies, answer the questions posted above, and your memcached latency and iperf throughput screenshots in [Questions](#questions). 
 
-You are expected to tag the version you want to submit using following commands and push it to your own repo. You can learn from this [tutorial](https://git-scm.com/book/en/v2/Git-Basics-Tagging) on how to use `git tag` command.
+You are expected to tag the version you would like us to grade on using following commands and push it to your own repo. You can learn from this [tutorial](https://git-scm.com/book/en/v2/Git-Basics-Tagging) on how to use `git tag` command. This command will record the time of your submission for our grading purpose.
 ```
-git tag -a submission -m "Submit project1"
+git tag -a submission -m "Final Submission"
 git push --tags
 ```
 
