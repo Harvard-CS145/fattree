@@ -6,7 +6,7 @@
 *********************** H E A D E R S  ***********************************
 *************************************************************************/
 
-// TODO 1: Define ethernet header, metadata and headers struct
+// Define ethernet header, metadata and headers struct
 
 typedef bit<9>  egressSpec_t;
 typedef bit<48> macAddr_t;
@@ -37,7 +37,7 @@ parser MyParser(packet_in packet,
                 inout standard_metadata_t standard_metadata) {
 
     state start {
-        // TODO 2: parse ethernet header
+        // parse ethernet header
         packet.extract(hdr.ethernet);
         transition accept;
     }
@@ -66,13 +66,13 @@ control MyIngress(inout headers hdr,
         mark_to_drop(standard_metadata);
     }
 
-    // TODO 3: define an action to forward packets
+    // define an action to forward packets
 
     action forward(bit<9> egress_port) {
         standard_metadata.egress_spec = egress_port;
     }
 
-    // TODO 4: define a table 
+    // define a table 
 
     table dmac {
         key = {
@@ -90,7 +90,7 @@ control MyIngress(inout headers hdr,
    
     apply {
 
-        // TODO 5: call the table
+        // call the table
         dmac.apply();
 
     }
@@ -125,7 +125,7 @@ control MyComputeChecksum(inout headers hdr, inout metadata meta) {
 
 control MyDeparser(packet_out packet, in headers hdr) {
     apply {
-        // TODO 6: deparse the ethernet header
+        // deparse the ethernet header
         packet.emit(hdr.ethernet);
     }
 }
