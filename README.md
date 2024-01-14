@@ -6,6 +6,13 @@
 
 ## Getting Started
 
+To start this project, you will first need to get the [infrastructure setup](https://github.com/minlanyu/cs145-site/blob/spring2024/infra.md) and clone this repository with submodules
+```
+git clone --recurse-submodules <your repository>
+```
+
+Run `./pull_update.sh` to pull project updates (if any). You might need to merge conflicts manually: most of the time, you just need to accept incoming changes; reach to TF if it is hard to merge. This step also applies to all subsequent projects. 
+
 We first show you an example on how to build a Binary Tree topology. You will then write your own topology generator and controller to build a FatTree.
 
 You will then build a single controller that routes applications to two cores. 
