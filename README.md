@@ -249,6 +249,6 @@ The total grades is 100:
 
 ### Survey
 
-Please fill up the survey when you finish your project.
+We encourage you to submit a project survey after completion. If you have done so, you can mention it in the report to get 2 extra points.
 
-[Survey link](https://docs.google.com/forms/d/e/1FAIpQLSdYKtTi5tlOSuF6YLG-9M5HVOUm_RDyGWJ8ulyi9-3R7PBsaA/viewform?usp=sf_link)
+[Survey link](https://forms.gle/MkifR82DsE2KqduX6)
