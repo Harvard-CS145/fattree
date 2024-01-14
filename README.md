@@ -73,6 +73,14 @@ The following figure illustrates an example FatTree topology with `k=4` where `k
 **Please make sure you use exactly the same switch and host names as the figure. Otherwise, we cannot test your reachability and you would not get the grades.**
 Your generated topology file `topology/p4app_fattree.json` should have all link bandwidth set to 1Mbps. (Check how we set link bandwidth previously for Binary Tree.) 
 
+#### Checkpoint: 
+
+Start Mininet with your new topology: 
+```
+sudo p4run --config topology/p4app_fattree.json
+```
+Notice the port layout printed at the top of the terminal output. Ports should be assigned based on the order links are listed in your topology. Is the output what you expected?
+
 ### Step Two: Write the Controller
 Now modify `controller/controller_fattree_onecore.py` for all the switches. The script should take an input `k`. For example, you can run the following for k=4:
 ```
@@ -80,7 +88,15 @@ Now modify `controller/controller_fattree_onecore.py` for all the switches. The 
 ```
 Your main goal is to enable all-to-all communications in the topology (i.e., the `pingall` command in mininet should succeed).
 You can test your solution using ``pingall`` to test the solution. 
-Currently, you should **route all the traffic through the first Core switch (*i.e.,* switch c1)**. We will explore routing through multiple switches later. 
+
+For the `onecore` version, you should **route traffic from all the hosts to the left aggregator in their pod, and then from the aggregators to the first Core switch switch c1, and then send the traffic down to the destination.**. (We will explore routing through multiple core switches later.)
+
+Here are a few example paths hosts take to help you understand the `onecore` routing:
+```
+h1, h2-->t1-->a1-->c1-->...
+h3, h4-->t2-->a1-->c1-->...
+h5, h6-->t3-->a3-->c1-->...
+```
 
 **Hint 1:** You need to treat the switches each layer separately. For the switches in each layer, you may install one rule for each host indicating which port it needs to be forwarded.
 
@@ -92,7 +108,7 @@ Currently, you should **route all the traffic through the first Core switch (*i.
 
 **Hint 5:** For debugging, you may start by testing ping between a pair of hosts before trying out `pingall`.
 
-**Food for thought:** Do you really need one rule for each host?
+**Food for thought:** Do you really need one rule for each host at the switches?
 
 ### Test your code
 This is how we will grade your code. We will run the scripts on multiple terminals in the same way as project 0.
@@ -134,7 +150,9 @@ sudo ./apps/send_traffic.py --trace ./apps/trace/project1.trace
 Note that the `generate_trace.py` scripts essentially just run the `memcached` and `iperf` commands you used in project 0, but allow us to run more complex traffic traces more efficiently for this project and future ones.
 
 ### Write a two-core controller for FatTree
-Our previous FatTree controller uses a single core switch. But we now run two applications, which may cause traffic congestion at the single core switch. So let's write a new controller that isolates the traffic of `memcached` and `iperf` applications by routing them to different core switches in FatTree topology. Specifically, you need to write a new controller `controller_fattree_twocore.py` that routes traffic using two core switches: For ease of grading, you should install rules that routes all traffic to hosts with odd number (i.e., those `dmac` addresses belong to `h1,3,5,7,9,11,13,15`) to core switch `c1`, and all traffic to hosts with even number (i.e., those `dmac` addresses belong to `h2,4,6,8,10,12,14,16`) to core switch `c2`. Given that `memcached` send traffic between `h1` and `h9`, the above rules will direct `memcached` traffic to `c1`. Similarly, `iperf` traffic between `h4` and `h12` goes to `c2`. Your new controller should also make mininet `pingall` succeed (for cases of `k=4, 6, 8`). 
+Our previous FatTree controller uses a single core switch. But we now run two applications, which may cause traffic congestion at the single core switch. So let's write a new controller that isolates the traffic of `memcached` and `iperf` applications by routing them to different core switches in FatTree topology. Specifically, you need to write a new controller `controller_fattree_twocore.py` that routes traffic using two core switches: For ease of grading, you should install rules that routes all traffic to hosts with odd number (i.e., those `dmac` addresses belong to `h1,3,5,7,9,11,13,15`) to core switch `c1`, and all traffic to hosts with even number (i.e., those `dmac` addresses belong to `h2,4,6,8,10,12,14,16`) to core switch `c2`. Given that `memcached` send traffic between `h1` and `h9`, the above rules will direct `memcached` traffic to `c1` (i.e., `h1-->t1-->a1-->c1-->a5-->t5-->h9`). Similarly, `iperf` traffic between `h4` and `h12` goes to `c2` (i.e., `h4-->t2-->a1-->c2-->a5-->t56-->h12`). 
+
+Your new controller should also make mininet `pingall` succeed (for cases of `k=4, 6, 8`). 
 
 Note that the above routing rules are just for your convenience. In practice, we identify memcached and iperf trraffic based on port numbers and traffic patterns and route traffic based on these features.
 
@@ -142,20 +160,35 @@ After you have finished the new controller for FatTree, you need to run the foll
 
 ### Experiments
 
-- **Expr 1-1:** Run the traffic trace above on FatTree topology using a single core switch 
-- **Expr 1-2:** Run the traffic trace above on FatTree topology using two core switches 
-- **Expr 1-3:** Run the traffic trace above on Binary Tree topology
+- **Expr 1-1:** Run the traffic trace above on FatTree topology using a single core switch. First start Mininet with FatTree topology with `k=4`, and then run script `expr1-1.sh` (which calls the controller and runs the traffic trace 5 times for you) and record the average `iperf` throughput and `memcached` latency of each trace execution.
+```
+./topology/generate_fattree_topo.py 4
+sudo p4run --config topology/p4app_fattree.json
+./test_scripts/expr1-1.sh
+```
+- **Expr 1-2:** Repeat the experiment above on FatTree topology using two core switches.
+```
+sudo p4run --config topology/p4app_fattree.json
+./test_scripts/expr1-2.sh
+```
+- **Expr 1-3:** Repeat the experiment above on Binary Tree topology.
+```
+./topology/generate_binary_topo.py 4
+sudo p4run --config topology/p4app_binary.json
+./test_scripts/expr1-3.sh
+```
 
-For each experiment, you will get the average throughput for `iperf` and average memcached latency for `memcached`.
+<!-- For each experiment, you will get the average throughput for `iperf` and average memcached latency for `memcached`.
 
 **Note**: the numbers can vary from time to time. It is better to run the experiments for at least 5 times to see the difference between different versions.
+-->
 
 ### Questions
-You should answer the following questions in your report.md (see [Submission and Grading](#submission-and-grading))) (just one or two sentences for each question mark):
+You should answer the following questions in your report.md (see [Submission and Grading](#submission-and-grading)) (just one or two sentences for each question mark):
 
-* What is the average latency of memcached in the three experiments? Please include the screenshots of three memcached latency results.
+* What is the average latency of memcached in the three experiments respectively? Please include the screenshots of three memcached latency results.
 * Compare the average latency of memcached in the three experiments and explain why
-* What is the average throughput of iperf in the three experiments? Please include the screenshots of three iperf throughput results. 
+* What is the average throughput of iperf in the three experiments respectively? Please include the screenshots of three iperf throughput results. 
 * Compare the average throughput of iperf in the three experiments and explain why
 
 ### Optional experiment (This not extra credit but just for you to have some fun experiments)
@@ -175,32 +208,35 @@ Daniel Rodrigues who took CS145 in spring 2020 made this [P4 network Visualizer]
 
 Note that we havn't fully tested the tool. We may not have timely response to fix the problems you face when using this tool. Please file tickets on that github if you face problems.
 
-This is also an example project for our final open-ended project 7. The final project is a chance for you to contribute to this class. So start thinking about project ideas as you work on Project 1-6. 
+This is also an example project for our final open-ended project. The final project is a chance for you to contribute to this class. So start thinking about project ideas as you work on the earlier projects. 
 
 ## Submission and Grading
 
-### What to submit
-You are expected to submit the following documents:
-
-1. Code: the programs that you write to generate the FatTree topologies with different `k` (`topo_fat_gen.py`), and the controller programs (with `k` as an input parameter) that you write to generate the forwarding rules for FatTree topologies with one core switch and two core switches (`controller_fattree_onecore.py` and `controller_fattree_twocore.py`). We will use scripts to automatically test them (i.e., `tests/test_fat_topo.py`).
-
-2. report/report.md: In this file you should describe how you generate the FatTree topologies, how to use your topology generating programs, how you generate the forwarding rules for different routing policies, answer the questions posted above, and your memcached latency and iperf throughput screenshots in [Questions](#questions). 
-
-You are expected to tag the version you would like us to grade on using following commands and push it to your own repo. You can learn from this [tutorial](https://git-scm.com/book/en/v2/Git-Basics-Tagging) on how to use `git tag` command. This command will record the time of your submission for our grading purpose.
+### Submit your work
+You are expected to tag the version you would like us to grade on using following commands and push it to your own repo. You can learn from [this tutorial](https://git-scm.com/book/en/v2/Git-Basics-Tagging) on how to use git tag command. This command will record the time of your submission for our grading purpose.
 ```
 git tag -a submission -m "Final Submission"
 git push --tags
 ```
 
+This is the same for all future projects so we will not repeat in future assignments.
+
+### What to submit
+
+You are expected to submit the following documents:
+
+1. Code: the programs that you write to generate the FatTree topologies with different `k` (`topo_fat_gen.py`), and the controller programs (with `k` as an input parameter) that you write to generate the forwarding rules for FatTree topologies with one core switch and two core switches (`controller_fattree_onecore.py` and `controller_fattree_twocore.py`). We will use scripts to automatically test them (i.e., `tests/test_fat_topo.py`). Please also add brief comments that help us understand your code.
+
+2. report/report.md: Anwser the [Questions](#questions). 
 
 ### Grading
 
 The total grades is 100:
 
-- 20: For your description of how you generate topologies (links and routing rules) in report.md.
-- 10: For your answers to the questions in report.md.
-- 60: We will test the connectivity of your solutions for FatTree with different `k`; each with score of 20. The score is proportional to the percentage of pairs that are connected. (60 means all can be connected). Your scores will be halved if you write separate lines of code for different k values.
-- 10: We will use scripts to automatically check the correctness of your solutions for separated core switches forwarding scheme.
+- 15: Correct topology for FatTree with `k`=4, 6, 8. Your scores will be halved if you write separate lines of code for different k values.
+- 45: Connectivity of your solutions for FatTree with `k`=4, 6, 8 with onecore controller. The score is proportional to the percentage of pairs that are connected. (60 means all can be connected). Your scores will be halved if you write separate lines of code for different k values.
+- 20: Connectivity of your solution for FatTree with `k=4` with two-core controller.
+- 20: For your answers to the questions in report.md.
 - Deductions based on late policies
 
 

@@ -9,12 +9,8 @@ from p4utils.utils.sswitch_thrift_API import SimpleSwitchThriftAPI
 import sys
 
 # Usage function
-
-
 def usage():
-    print(
-        "Usage: ./controller/controller_fattree_onecore.py [k]\n\tInsert P4 table entries to route traffic among hosts for FatTree topology with [k] value")
-
+    print("Usage: ./controller/controller_fattree_onecore.py [k]\n\tInsert P4 table entries to route traffic among hosts for FatTree topology with [k] value")
 
 class RoutingController(object):
 
@@ -52,16 +48,14 @@ class RoutingController(object):
         except Exception as e:
             print("Failed to parse the argument [k]! Cause: {}".format(e))
             usage()
-            exit(1)
-        half_k = k // 2
-        host_num = k * k * k // 4
-        tor_num = k * k // 2
-        agg_num = k * k // 2
-        core_num = k * k // 4
+            exit(1) 
+        
+        # Hint: You might find defining variables to denote the number of hosts, ToR switches,
+        # aggregation switches, and core switches helpful.
 
         for sw_name, controller in self.controllers.items():
             # TODO: forwarding rules for all switches
-
+            
             pass
 
     def main(self):
