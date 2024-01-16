@@ -246,7 +246,7 @@ The total grades is 100:
 - 18: For your answers to the questions in report.md.
 - 2: Finish the survey
 - Deductions based on late policies
-
+- Your code should be clean, clear, correct, and consistent. Check [CS61 coding style](https://cs61.seas.harvard.edu/site/2023/Style/#gsc.tab=0)
 
 ### Survey
 
