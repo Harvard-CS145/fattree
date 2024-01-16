@@ -243,12 +243,12 @@ The total grades is 100:
 - 15: Correct topology for FatTree with `k`=4, 6, 8. Your scores will be halved if you write separate lines of code for different k values.
 - 45: Connectivity of your solutions for FatTree with `k`=4, 6, 8 with onecore controller. The score is proportional to the percentage of pairs that are connected. (60 means all can be connected). Your scores will be halved if you write separate lines of code for different k values.
 - 20: Connectivity of your solution for FatTree with `k=4` with two-core controller.
-- 20: For your answers to the questions in report.md.
+- 18: For your answers to the questions in report.md.
+- 2: Finish the survey
 - Deductions based on late policies
 
 
 ### Survey
 
-We encourage you to submit a project survey after completion. If you have done so, you can mention it in the report to get 2 extra points.
-
+Please fill up the survey once you finish this project. 
 [Survey link](https://forms.gle/MkifR82DsE2KqduX6)
