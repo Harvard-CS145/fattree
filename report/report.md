@@ -13,9 +13,6 @@
 ## Citations
 (List any other source code or online resources your consulted.)
 
-## Survey 
-Sign your name here if you have finished the survey: 
-
 ## Grading notes (if any)
 
 ## Extra credit attempted (if any)

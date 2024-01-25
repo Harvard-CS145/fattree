@@ -250,5 +250,4 @@ The total grades is 100:
 
 ### Survey
 
-Please fill up the survey once you finish this project. 
-[Survey link](https://forms.gle/MkifR82DsE2KqduX6)
+Please fill out the Canvas survey after completing this project.
