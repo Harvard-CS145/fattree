@@ -232,7 +232,7 @@ This is the same for all future projects so we will not repeat in future assignm
 
 You are expected to submit the following documents:
 
-1. Code: the programs that you write to generate the FatTree topologies with different `k` (`topo_fat_gen.py`), and the controller programs (with `k` as an input parameter) that you write to generate the forwarding rules for FatTree topologies with one core switch and two core switches (`controller_fattree_onecore.py` and `controller_fattree_twocore.py`). We will use scripts to automatically test them (i.e., `tests/test_fat_topo.py`). Please also add brief comments that help us understand your code.
+1. Code: the programs that you write to generate the FatTree topologies with different `k` (`generate_fattree_topo.py`), and the controller programs (with `k` as an input parameter) that you write to generate the forwarding rules for FatTree topologies with one core switch and two core switches (`controller_fattree_onecore.py` and `controller_fattree_twocore.py`). We will use scripts to automatically test them (i.e., `tests/test_fat_topo.py`). Please also add brief comments that help us understand your code.
 
 2. report/report.md: Anwser the [Questions](#questions). 
 
