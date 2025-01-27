@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 echo "run binary controller"
 ./controller/controller_binary.py 4
 echo "generate trace"

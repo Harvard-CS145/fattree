@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 
 # ./controller/controller_fattree_twocore.py [k]
 #   Insert P4 table entries to route traffic among hosts for FatTree topology
@@ -8,9 +8,15 @@ from p4utils.utils.helper import load_topo
 from p4utils.utils.sswitch_thrift_API import SimpleSwitchThriftAPI
 import sys
 
+
 # Usage function
 def usage():
-    print("Usage: ./controller/controller_fattree_twocore.py [k]\n\tInsert P4 table entries to route traffic among hosts for FatTree topology with [k] value")
+    print(
+        "Usage: ./controller/controller_fattree_twocore.py [k]\n\t"
+        "Insert P4 table entries to route traffic among hosts for FatTree topology "
+        "with [k] value"
+    )
+
 
 class RoutingController(object):
 
@@ -19,7 +25,11 @@ class RoutingController(object):
         try:
             self.topo = load_topo("topology.json")
         except Exception as e:
-            print("Failed to open the topology database file 'topology.json'. Do you run the network with 'p4run'?\n\tCause: {}".format(e))
+            print(
+                "Failed to open the topology database file 'topology.json'. "
+                "Do you run the network with 'p4run'?\n\t"
+                f"Cause: {e}"
+            )
             exit(1)
         self.controllers = {}
         self.init()
@@ -46,16 +56,16 @@ class RoutingController(object):
         try:
             k = int(sys.argv[1])
         except Exception as e:
-            print("Failed to parse the argument [k]! Cause: {}".format(e))
+            print(f"Failed to parse the argument [k]! Cause: {e}")
             usage()
-            exit(1) 
+            exit(1)
 
         # Hint: You might find defining variables to denote the number of hosts, ToR switches,
         # aggregation switches, and core switches helpful.
 
         for sw_name, controller in self.controllers.items():
             # TODO: forwarding rules for all switches
-            
+
             pass
 
     def main(self):

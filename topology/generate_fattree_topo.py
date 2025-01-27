@@ -11,10 +11,13 @@ import sys
 
 def usage():
     print(
-        "Usage: ./topology/generate_fattree_topo.py [K]\n\tGenerate the FatTree topology config file `topology/p4app_fattree.json` with [K] value")
+        "Usage: ./topology/generate_fattree_topo.py [K]\n\t"
+        "Generate the FatTree topology config file `topology/p4app_fattree.json` "
+        "with [K] value"
+    )
 
 
-template = '''{
+template = """{
     "p4_src": "p4src/l2fwd.p4",
     "cli": true,
     "pcap_dump": true,
@@ -30,14 +33,14 @@ template = '''{
         }
     }
 }
-'''
+"""
 
 # Get the K value from command line argument (choose from 4, 6, 8)
 k = 4  # by default we K=4
 try:
     k = int(sys.argv[1])
 except Exception as e:
-    print("Failed to parse the argument [K]! Cause: {}".format(e))
+    print(f"Failed to parse the argument [K]! Cause: {e}")
     usage()
     exit(1)
 
@@ -46,7 +49,7 @@ if k != 4 and k != 6 and k != 8:
     usage()
     exit(1)
 
-print("We have K={} in the FatTree topology".format(k))
+print(f"We have K={k} in the FatTree topology")
 
 # Generate the topology details, number of hosts, tor switches, agg switches, and core switches
 half_k = k // 2
@@ -56,30 +59,33 @@ agg_num = k * k // 2
 core_num = k * k // 4
 
 # Generate our own JSON string
-hosts = ''
+hosts = ""
 # TODO: generate the hosts JSON string
 
-print("Host list: {}".format(hosts))
+print(f"Host list: {hosts}")
 
-switches = ''
+switches = ""
 # TODO: generate the switches JSON string
 
-print("Switch list: {}".format(switches))
+print(f"Switch list: {switches}")
 
-links = ''
+links = ""
 # TODO: generate the links JSON string
 
-print("Link list: {}".format(links))
+print(f"Link list: {links}")
 
 # Write the generated config JSON to file
 f = None
 try:
     f = open("topology/p4app_fattree.json", "w")
 except Exception as e:
-    print("Failed to open file topology/p4app_fattree.json to write the JSON config! Cause: {}".format(e))
+    print(
+        "Failed to open file topology/p4app_fattree.json to write the JSON config! "
+        f"Cause: {e}"
+    )
 try:
     f.write(template % (links, hosts, switches))
 except Exception as e:
-    print("Failed to write to file topology/p4app_fattree.json! Cause: {}".format(e))
+    print(f"Failed to write to file topology/p4app_fattree.json! Cause: {e}")
 
 print("Successfully generate FatTree topology config file topology/p4app_fattree.json")

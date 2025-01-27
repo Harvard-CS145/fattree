@@ -72,7 +72,7 @@ control MyIngress(inout headers hdr,
         standard_metadata.egress_spec = egress_port;
     }
 
-    // define a table 
+    // define a table
 
     table dmac {
         key = {
@@ -87,7 +87,7 @@ control MyIngress(inout headers hdr,
         size = 256;
         default_action = NoAction;
     }
-   
+
     apply {
 
         // call the table

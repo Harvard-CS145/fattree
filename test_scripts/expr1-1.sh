@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 echo "run one-core controller for FatTree"
 ./controller/controller_fattree_onecore.py 4
 echo "generate trace"
