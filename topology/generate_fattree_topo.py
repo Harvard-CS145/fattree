@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 
 # ./topology/generate_fattree_topo.py [K]
 #   Generate the FatTree topology config file `topology/p4app_fattree.json`
@@ -6,9 +6,8 @@
 
 import sys
 
+
 # Usage function
-
-
 def usage():
     print(
         "Usage: ./topology/generate_fattree_topo.py [K]\n\t"

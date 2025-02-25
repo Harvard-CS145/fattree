@@ -267,8 +267,6 @@ git tag -a submission -m "Final Submission"
 git push --tags
 ```
 
-This is the same for all future projects so we will not repeat in future assignments.
-
 ### What to submit
 
 You are expected to submit the following documents:

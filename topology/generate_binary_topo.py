@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#!/usr/bin/python3
 
 # ./topology/generate_binary_topo.py [num_layers]
 #   Generate the Binary Tree topology config file `topology/p4app_bin.json`
