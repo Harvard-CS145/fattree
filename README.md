@@ -13,7 +13,7 @@ To start this project, you will first need to get the [infrastructure setup](htt
 git clone --recurse-submodules "<your repository>"
 ```
 
-Run `./pull_update.sh` to pull project updates (if any). You might need to merge conflicts manually: most of the time, you just need to accept incoming changes; reach to TF if it is hard to merge. This step also applies to all subsequent projects.
+When there are updates to the starter code, TFs will open pull requests in your repository. You should merge the pull request and pull the changes back to local. You might need to resolve conflicts manually (either when merging PR in remote or pulling back to local). However, most of the times there shouldn't be too much conflict as long as you do not make changes to test scripts, infrastructures, etc. Reach out to TF if it is hard to merge.
 
 We first show you an example on how to build a Binary Tree topology. You will then write your own topology generator and controller to build a FatTree.
 
@@ -22,6 +22,7 @@ You will then build a single controller that routes applications to two cores.
 Finally, you can compare the performance of applicalication traffic on FatTree and Binary Tree.
 
 ## Tutorial: Build a Binary Tree Topology
+
 We build an example `I=4` layer Binary Tree topology with 16 hosts, 8 ToR switches, 7 internal switches, and multiple links with different bandwidth.
 
 ![bintree_topo](./figures/bintree_bw.png)
@@ -31,6 +32,7 @@ We first use a python script `topology/generate_binary_topo.py` to create the to
 ```bash
 ./topology/generate_binary_topo.py 4
 ```
+
 As you can see in `topology/generate_binary_topo.py`, the link bandwidth is specified like `["a1", "b1", {"bw": 2}]`, which means 2Mbit/sec between port `a1` and `b1`.
 Note that the link bandwidth actually translates into the speed of the two ports for that link in mininet (as you can see in the output of mininet: `(2.0Mbit) (2.0Mbit) (a1, b1)`).
 
@@ -71,7 +73,6 @@ You may find two configuration fields: `exec_scripts` and `default_bw` convenien
     ```
 
     inside the `topology` `{}` in `p4app_binary.json`, you set the default link bandwidth to 1Mbps; you can overwrite specific link (eg, `a1-b1`) bandwidth to 2Mbps by writing `["a1", "b1", {"bw": 2}]` inside `links` field under `topology`. Note that a link without any bandwidth setting (i.e., no default value and no specific value) will have infinite bandwidth.
-
 
 ## Your task: Build a FatTree Topology
 
@@ -219,10 +220,8 @@ sudo p4run --config topology/p4app_binary.json
 ./test_scripts/expr1-3.sh
 ```
 
-<!-- For each experiment, you will get the average throughput for `iperf` and average memcached latency for `memcached`.
-
-**Note**: the numbers can vary from time to time. It is better to run the experiments for at least 5 times to see the difference between different versions.
--->
+> [!NOTE]
+> Remember to clean up the `log` folder as it will keep growing, which may end up taking all disk space reserved for your VM (in which case the VM will fail to boot).
 
 ### Questions
 
