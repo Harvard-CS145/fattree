@@ -289,3 +289,6 @@ The total grades is 100:
 ### Survey
 
 Please fill up the survey when you finish your project: [Survey link](https://forms.gle/XGUn5bv2MaVeqhi89).
+
+> [!WARNING]
+> Remember to regularly clean up your `log/` and `pcap/` folder. They will keep growing in size and may end up taking up all disk space available in the VM and lead to a crash.
